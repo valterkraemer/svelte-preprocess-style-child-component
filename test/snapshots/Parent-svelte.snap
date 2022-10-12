@@ -1,0 +1,15 @@
+<script>
+  import Child from "./Child.svelte";
+</script>
+
+<Child classes$$={{"default":"svelte-child-1t1isc6","test":"svelte-child-odnmb3"}} />
+
+<style>
+  :global(.svelte-child-1t1isc6) {
+    color: red;
+  }
+
+  :global(.svelte-child-odnmb3) {
+    color: blue;
+  }
+</style>

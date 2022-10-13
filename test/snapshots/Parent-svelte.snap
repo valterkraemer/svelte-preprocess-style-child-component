@@ -2,7 +2,7 @@
   import Child from "./Child.svelte";
 </script>
 
-<Child classes$$={{"default":"svelte-child-1t1isc6","test":"svelte-child-odnmb3"}} />
+<Child classes$$={{"default":"svelte-child-1t1isc6 svelte-child-q5x5j6","test":"svelte-child-odnmb3"}} />
 
 <style>
   :global(.svelte-child-1t1isc6) {
@@ -11,5 +11,9 @@
 
   :global(.svelte-child-odnmb3) {
     color: blue;
+  }
+
+  :global(.svelte-child-q5x5j6:hover) {
+    color: green;
   }
 </style>

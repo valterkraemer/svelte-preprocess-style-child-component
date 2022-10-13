@@ -36,7 +36,9 @@ export const styleChildComponent = (): PreprocessorGroup => {
         | undefined = undefined;
       let gettingSelector:
         | {
-            targetNode: Node;
+            selectorEnd: number;
+            start: number;
+            end: number;
             classes: string[];
           }
         | undefined = undefined;
@@ -48,18 +50,36 @@ export const styleChildComponent = (): PreprocessorGroup => {
               let componentName = "";
               let propName = "default";
 
+              let start = 0;
+              let end = 0;
+
+              let exit = false;
               walk(node, {
                 enter(childNode: Node) {
+                  if (exit) {
+                    this.skip();
+                    return;
+                  }
+
                   if (childNode.type === "TypeSelector") {
                     const char = childNode.name[0];
 
                     if (char.toUpperCase() === char) {
                       componentName = childNode.name;
+                      start = childNode.start;
+                      end = childNode.end;
                     }
                   }
 
-                  if (childNode.type === "PseudoClassSelector") {
-                    propName = childNode.name;
+                  if (
+                    childNode.type === "AttributeSelector" &&
+                    !childNode.value // not a [checked=value]
+                  ) {
+                    propName = childNode.name.name;
+                    end = childNode.end;
+
+                    this.skip();
+                    exit = true;
                   }
                 },
               });
@@ -76,7 +96,9 @@ export const styleChildComponent = (): PreprocessorGroup => {
                 }
 
                 gettingSelector = {
-                  targetNode: node,
+                  selectorEnd: node.end,
+                  start,
+                  end,
                   classes: component[propName],
                 };
 
@@ -92,7 +114,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
 
             if (node.type === "Block") {
               if (gettingSelector) {
-                const { classes, targetNode } = gettingSelector;
+                const { classes, start, end, selectorEnd } = gettingSelector;
                 gettingSelector = undefined;
 
                 const blockContent = s.slice(node.start, node.end);
@@ -102,11 +124,8 @@ export const styleChildComponent = (): PreprocessorGroup => {
                   classes.push(className);
                 }
 
-                s.update(
-                  targetNode.start,
-                  targetNode.end,
-                  `:global(.${className})`
-                );
+                s.update(start, end, `:global(.${className}`);
+                s.appendRight(selectorEnd, `)`);
               }
 
               if (gettingExportBlock) {

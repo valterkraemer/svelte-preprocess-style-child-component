@@ -93,8 +93,7 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
     color: red;
   }
 
-  /* Should come up with a better way of selecting exports, now you cannot do e.g. `:hover` styles */
-  Child:paragraph {
+  Child[paragraph] {
     color: blue;
   }
 </style>

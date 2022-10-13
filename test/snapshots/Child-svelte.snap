@@ -1,5 +1,5 @@
 <h1 class="otherClass {$$props.classes$$?.default}">Hello!</h1>
-<p class="myTarget {$$props.classes$$?.test}">P Content</p>
+<input disabled="true" class="myTarget {$$props.classes$$?.test}" />
 
 <style>
   

@@ -21,6 +21,8 @@ testFixture("Burger.svelte");
 testFixture("Button.svelte");
 testFixture("Child.svelte");
 testFixture("Class.svelte");
+testFixture("Decendant.svelte");
+testFixture("ExportSelector.svelte");
 testFixture("Parent.svelte");
 
 test.run();

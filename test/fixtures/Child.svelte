@@ -1,5 +1,5 @@
 <h1 class="otherClass">Hello!</h1>
-<p class="myTarget">P Content</p>
+<input disabled="true" class="myTarget" />
 
 <style>
   :export {

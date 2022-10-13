@@ -1,0 +1,13 @@
+<script>
+  import Child from "./Child.svelte";
+</script>
+
+<div class="host">
+  <Child classes$$={{"default":"svelte-child-7fet96"}} />
+</div>
+
+<style>
+  .host:hover :global(.svelte-child-7fet96) {
+		transform: scale(1.1);
+	}
+</style>

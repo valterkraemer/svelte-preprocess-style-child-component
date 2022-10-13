@@ -1,0 +1,25 @@
+<script>
+  import Child from "./Child.svelte";
+</script>
+
+<Child classes$$={{"default":"svelte-child-1t1isc6","test":"svelte-child-ywtjqr svelte-child-q5x5j6 svelte-child-16zk5bf"}} />
+<div class="local">Div</div>
+
+<style>
+  :global(.svelte-child-1t1isc6) {
+    color: red;
+  }
+
+  :global(.svelte-child-ywtjqr) {
+    transform: scale(1.5);
+  }
+
+  :global(.svelte-child-q5x5j6[disabled]) {
+    color: green;
+  }
+
+  :global(.svelte-child-16zk5bf[disabled]),
+  .local {
+    transform: scale(2);
+  }
+</style>

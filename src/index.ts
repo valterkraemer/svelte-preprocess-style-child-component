@@ -15,20 +15,18 @@ export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
     markup: ({ content, filename }) => {
       const s = new MagicString(content);
 
-      const ast = parse(content);
+      const scriptlessContent = content.replace(
+        /<!--[^]*?-->|<script(\s[^]*?)?(?:>([^]*?)<\/script>|\/>)/gi,
+        (match) => {
+          return " ".repeat(match.length);
+        }
+      );
+
+      const ast = parse(scriptlessContent);
 
       type Component = Record<string, string[]>;
 
       const components: Record<string, Component> = {};
-      if (ast.instance) {
-        walk(ast.instance, {
-          enter(node: Node) {
-            if (node.type === "ImportDefaultSpecifier") {
-              components[node.local.name] = {};
-            }
-          },
-        });
-      }
 
       let exportBlock = "";
       let gettingExportBlock:
@@ -46,33 +44,35 @@ export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
       if (ast.css) {
         walk(ast.css, {
           enter(node: Node, parent: Node | undefined) {
-            if (node.type === "PseudoClassSelector" && node.name === "export") {
-              gettingExportBlock = {
-                targetNode: parent,
-              };
-            }
-
             if (node.type === "Selector") {
-              let component: Component | undefined = undefined;
+              let componentName = "";
               let propName = "default";
 
               walk(node, {
                 enter(childNode: Node) {
-                  if (
-                    childNode.type === "TypeSelector" &&
-                    components[childNode.name]
-                  ) {
-                    component = components[childNode.name];
+                  if (childNode.type === "TypeSelector") {
+                    const char = childNode.name[0];
+
+                    if (char.toUpperCase() === char) {
+                      componentName = childNode.name;
+                    }
                   }
+
                   if (childNode.type === "PseudoClassSelector") {
                     propName = childNode.name;
                   }
                 },
               });
 
-              if (component) {
+              if (componentName) {
+                if (!components[componentName]) {
+                  components[componentName] = {};
+                }
+
+                const component = components[componentName];
+
                 if (!component[propName]) {
-                  (component as Component)[propName] = [];
+                  component[propName] = [];
                 }
 
                 gettingSelector = {
@@ -84,14 +84,20 @@ export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
               }
             }
 
+            if (node.type === "PseudoClassSelector" && node.name === "export") {
+              gettingExportBlock = {
+                targetNode: parent,
+              };
+            }
+
             if (node.type === "Block") {
               if (gettingSelector) {
                 const { classes, targetNode } = gettingSelector;
                 gettingSelector = undefined;
 
-                const content = s.slice(node.start, node.end);
+                const blockContent = s.slice(node.start, node.end);
 
-                const className = `svelte-child-${hash(content)}`;
+                const className = `svelte-child-${hash(blockContent)}`;
                 if (!classes.includes(className)) {
                   classes.push(className);
                 }
@@ -104,7 +110,7 @@ export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
               }
 
               if (gettingExportBlock) {
-                exportBlock = content;
+                exportBlock = s.slice(node.start, node.end);
               }
             }
           },
@@ -121,7 +127,7 @@ export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
       }
 
       if (!s.hasChanged()) {
-        return { code: content };
+        return;
       }
 
       const exportContent = parseCssExport(exportBlock);
@@ -140,7 +146,6 @@ export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
               walk(node, {
                 enter(childNode: Node) {
                   if (
-                    hasClassSelectors &&
                     childNode.type === "Attribute" &&
                     childNode.name === "class"
                   ) {

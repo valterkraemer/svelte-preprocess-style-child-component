@@ -41,10 +41,10 @@ npm i -D svelte-preprocess-style-child-component
 Add preprocessor in `svelte.config.js`. Should be something like:
 
 ```js
-import { svelteProcessStyleChildComponent } from "svelte-preprocess-style-child-component";
+import { styleChildComponent } from "svelte-preprocess-style-child-component";
 ...
 {
-  preprocess: [svelteProcessStyleChildComponent(), preprocess()],
+  preprocess: [styleChildComponent(), preprocess()],
 }
 ```
 
@@ -156,13 +156,13 @@ It transforms component selectors to global selectors, and passes down the class
 
 ## Issues
 
-I'm sure there a bunch of cases where this won't work as expected, here are some I've stubled upon. They could probably be fixed, but this is more of a POC.
+I'm sure there a bunch of cases where this won't work as expected. Here are some I've stubled upon. They could probably be fixed, but this is more of a POC.
 
 ```html
 <style>
   :export {
     default: h1; /* does not work */
-    default: "h1";  /* works */
+    default: "h1"; /* works */
   }
 </style>
 ```
@@ -180,4 +180,3 @@ I'm sure there a bunch of cases where this won't work as expected, here are some
   }
 </style>
 ```
-

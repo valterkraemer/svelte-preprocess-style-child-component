@@ -2,7 +2,7 @@ import { test } from "uvu";
 import { resolve } from "path";
 import { preprocess } from "svelte/compiler";
 
-import { svelteProcessStyleChildComponent } from "../dist/index.mjs";
+import { styleChildComponent } from "../dist/index.mjs";
 import { fileSnapshot } from "./test-utils.js";
 import { readFile } from "fs/promises";
 
@@ -11,9 +11,7 @@ function testFixture(fileName) {
     const path = resolve(`test/fixtures/${fileName}`);
     const fileContent = await readFile(path, "utf-8");
 
-    const result = await preprocess(fileContent, [
-      svelteProcessStyleChildComponent(),
-    ]);
+    const result = await preprocess(fileContent, [styleChildComponent()]);
 
     await fileSnapshot(fileName, result.code);
   });

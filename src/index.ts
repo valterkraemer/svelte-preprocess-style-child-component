@@ -10,7 +10,7 @@ interface Node {
   [propName: string]: any;
 }
 
-export const svelteProcessStyleChildComponent = (): PreprocessorGroup => {
+export const styleChildComponent = (): PreprocessorGroup => {
   return {
     markup: ({ content, filename }) => {
       const s = new MagicString(content);

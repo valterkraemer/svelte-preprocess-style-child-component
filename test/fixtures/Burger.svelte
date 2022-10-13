@@ -1,0 +1,22 @@
+<svg
+  class="svg"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  viewBox="0 0 19 18"
+  ><path
+    stroke-linecap="round"
+    stroke="currentColor"
+    stroke-width="3"
+    d="M2 2h15.5M2 9h15.5M2 16h15.5"
+  /></svg
+>
+
+<style>
+  svg {
+    height: 1em;
+  }
+
+  :export {
+    default: "svg";
+  }
+</style>

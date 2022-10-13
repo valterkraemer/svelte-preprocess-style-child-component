@@ -21,5 +21,7 @@ function testFixture(fileName) {
 
 testFixture("Child.svelte");
 testFixture("Parent.svelte");
+testFixture("Burger.svelte");
+testFixture("Button.svelte");
 
 test.run();

@@ -1,0 +1,6 @@
+<h1 class="heading {$$props.classes$$?.default}">Top heading</h1>
+<h2 class="heading {$$props.classes$$?.default}">Second heading</h2>
+
+<style>
+  
+</style>

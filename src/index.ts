@@ -288,7 +288,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
 
       return {
         code: s.toString(),
-        map: s.generateDecodedMap({ source: filename, hires: true }),
+        map: s.generateMap({ source: filename, file: filename, hires: true }),
       };
     },
   };

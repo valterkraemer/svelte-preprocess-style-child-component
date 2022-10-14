@@ -3,16 +3,28 @@
   import Child2 from "./Child2.svelte";
 </script>
 
+<Child parts$$={{"default":"svelte-child-1t1isc6 svelte-child-odnmb3 svelte-child-qw7b14"}}  />
 <a>
-  <Child parts$$={{"default":"svelte-child-1t1isc6"}}  />
-  <Child2 parts$$={{"default":"svelte-child-1t1isc6"}}  />
+  <Child parts$$={{"default":"svelte-child-1t1isc6"}} />
+  <Child2 parts$$={{"default":"svelte-child-qw7b14"}}  />
 </a>
 
 <p class="item">P</p>
 
 <style>
-  .item,
-  a :global(.svelte-child-1t1isc6) {
+  :global(.svelte-child-1t1isc6) {
     color: red;
+  }
+
+  :global(.svelte-child-odnmb3) {
+    color: blue;
+  }
+
+  .item {
+    padding: 2px;
+  }
+
+  a :global(.svelte-child-qw7b14) {
+    margin: 0;
   }
 </style>

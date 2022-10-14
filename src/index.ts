@@ -90,8 +90,15 @@ export const styleChildComponent = (): PreprocessorGroup => {
                   const value = childNode.value?.[0];
 
                   if (value) {
-                    classAdded = true;
+                    // Check if surrounded by quotations not e.g. class={prop}
+                    if (s.slice(value.start - 1, value.start) !== '"') {
+                      s.appendLeft(value.start, '"');
+                      s.appendRight(value.end, '"');
+                    }
+
                     s.appendLeft(value.end, ` {${prop}}`);
+
+                    classAdded = true;
                   }
                 }
               },

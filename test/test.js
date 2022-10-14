@@ -23,6 +23,8 @@ testFixture("Button.svelte");
 testFixture("Child.svelte");
 testFixture("Class.svelte");
 testFixture("Decendant.svelte");
+testFixture("Example-Child.svelte");
+testFixture("Example-Parent.svelte");
 testFixture("ExportSelector.svelte");
 testFixture("Parent.svelte");
 testFixture("ShorthandPart.svelte");

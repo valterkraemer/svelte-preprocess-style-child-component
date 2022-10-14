@@ -1,0 +1,15 @@
+<script>
+  import Child from "./Child.svelte";
+</script>
+
+<Child parts$$={{"default$$":"svelte-child-27gw8r","heading":"svelte-child-qzjtt3"}} />
+
+<style>
+  :global(.svelte-child-27gw8r) {
+    padding: 8px;
+  }
+
+  :global(.svelte-child-qzjtt3) {
+    font-size: 2rem;
+  }
+</style>

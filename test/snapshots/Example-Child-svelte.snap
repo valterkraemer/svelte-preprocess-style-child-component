@@ -1,0 +1,3 @@
+<div  class={$$props.parts$$?.default$$}>
+  <h1  class={$$props.parts$$?.heading}>Child component!</h1>
+</div>

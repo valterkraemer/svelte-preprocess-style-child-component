@@ -1,6 +1,2 @@
-<h1 class="heading {$$props.classes$$?.default}">Top heading</h1>
-<h2 class="heading {$$props.classes$$?.default}">Second heading</h2>
-
-<style>
-  
-</style>
+<h1  class={$$props.parts$$?.heading}>Top heading</h1>
+<h2  class={$$props.parts$$?.heading}>Second heading</h2>

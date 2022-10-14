@@ -1,6 +1,2 @@
-<h1 class="otherClass {$$props.classes$$?.default}">Hello!</h1>
-<input disabled="true" class="myTarget {$$props.classes$$?.test}" />
-
-<style>
-  
-</style>
+<h1  class="otherClass {$$props.parts$$?.default}">Hello!</h1>
+<input  disabled="true" class="myTarget {$$props.parts$$?.test}" />

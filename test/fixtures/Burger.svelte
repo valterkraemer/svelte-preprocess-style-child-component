@@ -1,4 +1,5 @@
 <svg
+  part="default"
   class="svg"
   xmlns="http://www.w3.org/2000/svg"
   fill="none"
@@ -14,9 +15,5 @@
 <style>
   svg {
     height: 1em;
-  }
-
-  :export {
-    default: "svg";
   }
 </style>

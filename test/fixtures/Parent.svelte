@@ -5,15 +5,15 @@
 <Child />
 
 <style>
-  Child {
+  Child::part(default) {
     color: red;
   }
 
-  Child::export(test) {
+  Child::part(test) {
     color: blue;
   }
 
-  Child:hover {
+  Child::part(default):hover {
     color: green;
   }
 </style>

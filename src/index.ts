@@ -1,6 +1,6 @@
 import { parse, walk } from "svelte/compiler";
 import MagicString from "magic-string";
-import { classifySelectors, hash, parseCssExport } from "./utils.js";
+import { hash } from "./utils.js";
 import type { PreprocessorGroup } from "svelte/types/compiler/preprocess/types.js";
 
 interface Node {
@@ -28,12 +28,6 @@ export const styleChildComponent = (): PreprocessorGroup => {
 
       const components: Record<string, Component> = {};
 
-      let exportBlock = "";
-      let gettingExportBlock:
-        | {
-            targetNode?: Node;
-          }
-        | undefined = undefined;
       let gettingSelector:
         | {
             selectorEnd: number;
@@ -45,7 +39,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
 
       if (ast.css) {
         walk(ast.css, {
-          enter(node: Node, parent: Node | undefined) {
+          enter(node: Node) {
             if (node.type === "Selector") {
               let componentName = "";
               let propName = "default";
@@ -67,7 +61,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
 
                   if (
                     childNode.type === "PseudoElementSelector" &&
-                    childNode.name === "export" &&
+                    childNode.name === "part" &&
                     childNode.children?.[0].value
                   ) {
                     propName = childNode.children?.[0].value;
@@ -100,12 +94,6 @@ export const styleChildComponent = (): PreprocessorGroup => {
               }
             }
 
-            if (node.type === "PseudoClassSelector" && node.name === "export") {
-              gettingExportBlock = {
-                targetNode: parent,
-              };
-            }
-
             if (node.type === "Block") {
               if (gettingSelector) {
                 const { classes, start, end, selectorEnd } = gettingSelector;
@@ -121,85 +109,56 @@ export const styleChildComponent = (): PreprocessorGroup => {
                 s.update(start, end, `:global(.${className}`);
                 s.appendRight(selectorEnd, `)`);
               }
-
-              if (gettingExportBlock) {
-                exportBlock = s.slice(node.start, node.end);
-              }
-            }
-          },
-
-          leave(node: Node) {
-            if (node.type === "Rule" && gettingExportBlock) {
-              gettingExportBlock = undefined;
-
-              // Remove :export{...} rule
-              s.remove(node.start, node.end);
             }
           },
         });
       }
 
-      if (!s.hasChanged()) {
-        return;
-      }
-
-      const exportContent = parseCssExport(exportBlock);
-      const selectors = classifySelectors(exportContent);
-      const hasClassSelectors = Object.keys(selectors.class).length !== 0;
-
       walk(ast.html, {
-        enter(node: Node) {
-          if (node.type === "Element") {
-            if (selectors.element[node.name]) {
-              const prop = `$$props.classes$$?.${selectors.element[node.name]}`;
+        enter(node: Node, parent: Node) {
+          if (node.type === "Attribute" && node.name === "part") {
+            const value = node.value?.[0].data;
 
-              let classAdded = false;
+            if (!value) {
+              throw new Error(`part is missing value in ${filename}`);
+            }
 
-              // Append to existing set of classes
-              walk(node, {
-                enter(childNode: Node) {
-                  if (
-                    childNode.type === "Attribute" &&
-                    childNode.name === "class"
-                  ) {
-                    const value = childNode.value?.[0];
+            const prop = `$$props.parts$$?.${value}`;
 
-                    if (value) {
-                      classAdded = true;
-                      s.appendLeft(value.end, ` {${prop}}`);
-                    }
+            let classAdded = false;
+
+            // remove part="x"
+            s.remove(node.start, node.end);
+
+            // Append to existing set of classes
+            walk(parent, {
+              enter(childNode: Node) {
+                if (
+                  childNode.type === "Attribute" &&
+                  childNode.name === "class"
+                ) {
+                  const value = childNode.value?.[0];
+
+                  if (value) {
+                    classAdded = true;
+                    s.appendLeft(value.end, ` {${prop}}`);
                   }
-                },
-              });
+                }
+              },
+            });
 
-              if (classAdded) {
-                return;
-              }
-
-              // Create class attribute and add class
-              let attributesEnd = node.start + node.name.length;
-              if (node.attributes.length) {
-                attributesEnd = node.attributes[node.attributes.length - 1].end;
-              }
-
-              s.appendLeft(attributesEnd, ` class={${prop}}`);
+            if (classAdded) {
+              return;
             }
-          }
 
-          if (
-            hasClassSelectors &&
-            node.type === "Attribute" &&
-            node.name === "class"
-          ) {
-            const value = node.value?.[0];
-            const classes = value?.data.split(/\s+/) ?? [];
-
-            for (const className of classes) {
-              const found = selectors.class[className];
-              if (found) {
-                s.appendLeft(value.end, ` {$$props.classes$$?.${found}}`);
-              }
+            // Create class attribute and add class
+            let attributesEnd = parent.start + parent.name.length;
+            if (parent.attributes.length) {
+              attributesEnd =
+                parent.attributes[parent.attributes.length - 1].end;
             }
+
+            s.appendLeft(attributesEnd, ` class={${prop}}`);
           }
 
           if (
@@ -219,7 +178,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
 
             s.appendLeft(
               attributesEnd,
-              ` classes$$={${JSON.stringify(result)}}`
+              ` parts$$={${JSON.stringify(result)}}`
             );
           }
         },

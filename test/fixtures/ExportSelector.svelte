@@ -6,19 +6,19 @@
 <div class="local">Div</div>
 
 <style>
-  Child {
+  Child::part(default) {
     color: red;
   }
 
-  Child::export(test) {
+  Child::part(test) {
     transform: scale(1.5);
   }
 
-  Child::export(test)[disabled] {
+  Child::part(test)[disabled] {
     color: green;
   }
 
-  Child::export(test)[disabled],
+  Child::part(test)[disabled],
   .local {
     transform: scale(2);
   }

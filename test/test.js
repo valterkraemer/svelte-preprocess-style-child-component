@@ -13,6 +13,7 @@ function testFixture(fileName) {
 
     const result = await preprocess(fileContent, [styleChildComponent()]);
 
+    //console.log(result.code);
     await fileSnapshot(fileName, result.code);
   });
 }

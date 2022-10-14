@@ -6,6 +6,7 @@
 </script>
 
 <button
+  part="default"
   class="{clsx(button.btn, {
     [button.default]: variant === "default",
     [button.transparent]: variant === "transparent",
@@ -14,9 +15,3 @@
 >
   <slot />
 </button>
-
-<style>
-  :export {
-    button: "button";
-  }
-</style>

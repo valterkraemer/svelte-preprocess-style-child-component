@@ -1,5 +1,6 @@
 <svg
-  class="svg {$$props.classes$$?.default}"
+  
+  class="svg {$$props.parts$$?.default}"
   xmlns="http://www.w3.org/2000/svg"
   fill="none"
   viewBox="0 0 19 18"
@@ -15,6 +16,4 @@
   svg {
     height: 1em;
   }
-
-  
 </style>

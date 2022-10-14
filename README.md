@@ -7,13 +7,7 @@ Allows you to style elements inside a child component.
 `Child.svelte`
 
 ```html
-<h1>Child component!</h1>
-
-<style>
-  :export {
-    default: "h1";
-  }
-</style>
+<h1 part="default">Child component!</h1>
 ```
 
 `Parent.svelte`
@@ -26,7 +20,7 @@ Allows you to style elements inside a child component.
 <Child />
 
 <style>
-  Child {
+  Child::part(default) {
     color: red;
   }
 </style>
@@ -48,57 +42,6 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 }
 ```
 
-## Additional features
-
-### Target class
-
-```html
-<h1 class="heading">Top heading</h1>
-<h2 class="heading">Second heading</h2>
-
-<style>
-  :export {
-    default: ".heading";
-  }
-</style>
-```
-
-### Multiple exports
-
-`Child.svelte`
-
-```html
-<h1>Child component!</h1>
-<p>My paragraph</p>
-
-<style>
-  :export {
-    default: "h1";
-    p: "p";
-  }
-</style>
-```
-
-`Parent.svelte`
-
-```html
-<script>
-  import Child from "./Child.svelte";
-</script>
-
-<Child />
-
-<style>
-  Child {
-    color: red;
-  }
-
-  Child::export(p) {
-    color: blue;
-  }
-</style>
-```
-
 ## How it works
 
 It transforms component selectors to global selectors, and passes down the class to the Child component, that then applies it to the correct elements.
@@ -106,13 +49,7 @@ It transforms component selectors to global selectors, and passes down the class
 ### `Child.svelte`
 
 ```html
-<h1>Child component!</h1>
-
-<style>
-  :export {
-    default: "h1";
-  }
-</style>
+<h1 part="default">Child component!</h1>
 ```
 
 ⬇️
@@ -131,7 +68,7 @@ It transforms component selectors to global selectors, and passes down the class
 <Child />
 
 <style>
-  Child {
+  Child::part(default) {
     color: red;
   }
 </style>
@@ -158,24 +95,9 @@ It transforms component selectors to global selectors, and passes down the class
 I'm sure there a bunch of cases where this won't work as expected. Here are some I've stubled upon. They could probably be fixed, but this is more of a POC.
 
 ```html
-<style>
-  :export {
-    default: h1; /* does not work */
-    default: "h1"; /* works */
-  }
-</style>
-```
-
-```html
 <!-- does not work -->
 <h1 class={dynamicClass}>Child component!</h1>
 
 <!-- works -->
 <h1 class="{dynamicClass}">Child component!</h1>
-
-<style>
-  :export {
-    default: "h1";
-  }
-</style>
 ```

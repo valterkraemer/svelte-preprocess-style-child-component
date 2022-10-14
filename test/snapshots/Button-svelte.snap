@@ -6,15 +6,12 @@
 </script>
 
 <button
+  
   class="{clsx(button.btn, {
     [button.default]: variant === "default",
     [button.transparent]: variant === "transparent",
     [button.green]: variant === "green",
-  })} {$$props.classes$$?.button}"
+  })} {$$props.parts$$?.default}"
 >
   <slot />
 </button>
-
-<style>
-  
-</style>

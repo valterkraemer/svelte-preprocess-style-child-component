@@ -9,7 +9,7 @@
     color: red;
   }
 
-  Child[test] {
+  Child::export(test) {
     color: blue;
   }
 

@@ -72,10 +72,11 @@ export const styleChildComponent = (): PreprocessorGroup => {
                   }
 
                   if (
-                    childNode.type === "AttributeSelector" &&
-                    !childNode.value // not a [checked=value]
+                    childNode.type === "PseudoElementSelector" &&
+                    childNode.name === "export" &&
+                    childNode.children?.[0].value
                   ) {
-                    propName = childNode.name.name;
+                    propName = childNode.children?.[0].value;
                     end = childNode.end;
 
                     this.skip();

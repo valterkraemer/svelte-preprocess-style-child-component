@@ -93,7 +93,7 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
     color: red;
   }
 
-  Child[paragraph] {
+  Child::export(p) {
     color: blue;
   }
 </style>

@@ -10,15 +10,15 @@
     color: red;
   }
 
-  Child[test] {
+  Child::export(test) {
     transform: scale(1.5);
   }
 
-  Child[test][disabled] {
+  Child::export(test)[disabled] {
     color: green;
   }
 
-  Child[test][disabled],
+  Child::export(test)[disabled],
   .local {
     transform: scale(2);
   }

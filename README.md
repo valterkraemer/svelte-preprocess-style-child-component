@@ -57,14 +57,18 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 </style>
 ```
 
-### Shorthand selector `Child` ➡️ `Child::part(default)`
+### Shorthand selector
 
-Component selector without `::part(x)` is treated as an alias for `::part(default)`.
+Component selector `Child` and `Child::part` are treated as an alias for `::part(default)`.
 
 So these are the same:
 
 ```css
 Child {
+  color: red;
+}
+
+Child::part {
   color: red;
 }
 
@@ -82,6 +86,11 @@ _NOTE_: You cannot skip the `::part` selector with just a class selector.
 <style>
   .item {
     /* Does not work */
+    color: red;
+  }
+
+  .item::part {
+    /* Works! */
     color: red;
   }
 

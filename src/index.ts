@@ -228,16 +228,13 @@ export const styleChildComponent = (): PreprocessorGroup => {
                             case "PseudoElementSelector":
                               // TODO: Can it have multiple PseudoElementSelectors?
                               removeChildren.push(child);
-                              part = child.children?.[0].value;
+                              const value = child.children?.[0].value;
+                              if (value) {
+                                part = value;
+                              }
                               break;
                           }
                         });
-
-                        if (!part) {
-                          throw new Error(
-                            `part is missing value in ${filename}`
-                          );
-                        }
 
                         return {
                           start: childChunk[0].start,

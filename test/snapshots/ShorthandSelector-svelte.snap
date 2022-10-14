@@ -2,10 +2,14 @@
   import Child from "./Child.svelte";
 </script>
 
-<Child parts$$={{"default":"svelte-child-1t1isc6"}} />
+<Child parts$$={{"default":"svelte-child-1t1isc6 svelte-child-odnmb3"}}  />
 
 <style>
   :global(.svelte-child-1t1isc6) {
     color: red;
+  }
+
+  :global(.svelte-child-odnmb3) {
+    color: blue;
   }
 </style>

@@ -7,7 +7,7 @@
 </div>
 
 <style>
-  .host:hover Child::part(default) {
+  .host:hover Child {
 		transform: scale(1.1);
 	}
 </style>

@@ -6,7 +6,7 @@
 <div class="local">Div</div>
 
 <style>
-  Child::part(default) {
+  Child {
     color: red;
   }
 

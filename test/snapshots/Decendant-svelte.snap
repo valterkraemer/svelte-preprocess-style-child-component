@@ -3,7 +3,7 @@
 </script>
 
 <div class="host">
-  <Child parts$$={{"default":"svelte-child-7fet96"}} />
+  <Child parts$$={{"default$$":"svelte-child-7fet96"}} />
 </div>
 
 <style>

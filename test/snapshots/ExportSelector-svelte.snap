@@ -2,7 +2,7 @@
   import Child from "./Child.svelte";
 </script>
 
-<Child parts$$={{"default":"svelte-child-1t1isc6","test":"svelte-child-ywtjqr svelte-child-q5x5j6 svelte-child-16zk5bf"}} />
+<Child parts$$={{"default$$":"svelte-child-1t1isc6","test":"svelte-child-ywtjqr svelte-child-q5x5j6 svelte-child-16zk5bf"}} />
 <div class="local">Div</div>
 
 <style>

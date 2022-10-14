@@ -6,7 +6,7 @@
 </script>
 
 <button
-  part="default"
+  part
   class="{clsx(button.btn, {
     [button.default]: variant === "default",
     [button.transparent]: variant === "transparent",

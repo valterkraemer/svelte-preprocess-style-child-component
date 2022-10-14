@@ -67,11 +67,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
           }
 
           if (node.type === "Attribute" && node.name === "part") {
-            const value = node.value?.[0].data;
-
-            if (!value) {
-              throw new Error(`part is missing value in ${filename}`);
-            }
+            const value = node.value?.[0]?.data ?? "default$$";
 
             const prop = `$$props.parts$$?.${value}`;
 
@@ -194,7 +190,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
                       .map((childChunk) => {
                         let instances = componentInstances.slice();
                         const removeChildren: Node[] = [];
-                        let part = "default";
+                        let part = "default$$";
 
                         childChunk.forEach((child) => {
                           switch (child.type) {

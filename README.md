@@ -7,7 +7,9 @@ Allows you to style elements inside a child component using similar syntax as [C
 `Child.svelte`
 
 ```html
-<h1 part="heading">Child component!</h1>
+<div part>
+  <h1 part="heading">Child component!</h1>
+</div>
 ```
 
 `Parent.svelte`
@@ -20,8 +22,12 @@ Allows you to style elements inside a child component using similar syntax as [C
 <Child />
 
 <style>
+  Child {
+    padding: 8px;
+  }
+
   Child::part(heading) {
-    color: red;
+    font-size: 2rem;
   }
 </style>
 ```
@@ -51,7 +57,7 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 <OtherCard class="item" />
 
 <style>
-  .item::part(default) {
+  .item::part {
     color: red;
   }
 </style>
@@ -59,9 +65,9 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 
 ### Shorthand selector
 
-Component selector `Child` and `Child::part` are treated as an alias for `::part(default)`.
+`::part` is not needed when targeting component
 
-So these are the same:
+These are the same:
 
 ```css
 Child {
@@ -71,13 +77,9 @@ Child {
 Child::part {
   color: red;
 }
-
-Child::part(default) {
-  color: red;
-}
 ```
 
-_NOTE_: You cannot skip the `::part` selector with just a class selector.
+_NOTE_: You cannot skip the `::part` selector when using just a class selector.
 
 ```html
 <Child class="item" />
@@ -108,13 +110,17 @@ It transforms component selectors to global selectors, and passes down the class
 ### `Child.svelte`
 
 ```html
-<h1 part="heading">Child component!</h1>
+<div part>
+  <h1 part="heading">Child component!</h1>
+</div>
 ```
 
 ⬇️
 
 ```html
-<h1 class="{$$props.classes$$?.heading}">Child component!</h1>
+<div class={$$props.parts$$?.default$$}>
+  <h1 class={$$props.parts$$?.heading}>Child component!</h1>
+</div>
 ```
 
 ### `Parent.svelte`
@@ -127,8 +133,12 @@ It transforms component selectors to global selectors, and passes down the class
 <Child />
 
 <style>
+  Child {
+    padding: 8px;
+  }
+
   Child::part(heading) {
-    color: red;
+    font-size: 2rem;
   }
 </style>
 ```
@@ -140,11 +150,15 @@ It transforms component selectors to global selectors, and passes down the class
   import Child from "./Child.svelte";
 </script>
 
-<Child classes$$={{heading:"svelte-child-1t1isc6"}} />
+<Child parts$$={{"default$$":"svelte-child-27gw8r","heading":"svelte-child-qzjtt3"}} />
 
 <style>
-  :global(.svelte-child-1t1isc6) {
-    color: red;
+  :global(.svelte-child-27gw8r) {
+    padding: 8px;
+  }
+
+  :global(.svelte-child-qzjtt3) {
+    font-size: 2rem;
   }
 </style>
 ```

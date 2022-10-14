@@ -11,7 +11,7 @@
     [button.default]: variant === "default",
     [button.transparent]: variant === "transparent",
     [button.green]: variant === "green",
-  })} {$$props.parts$$?.default}"
+  })} {$$props.parts$$?.default$$}"
 >
   <slot />
 </button>

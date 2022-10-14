@@ -24,7 +24,7 @@
     padding: 2px;
   }
 
-  a .item::part(default) {
+  a .item::part {
     margin: 0;
   }
 </style>

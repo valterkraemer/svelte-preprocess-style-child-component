@@ -1,0 +1,1 @@
+<h1  class={$$props.parts$$?.default$$}>Hello!</h1>

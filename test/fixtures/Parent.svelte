@@ -5,7 +5,7 @@
 <Child />
 
 <style>
-  Child::part(default) {
+  Child {
     color: red;
   }
 
@@ -13,7 +13,7 @@
     color: blue;
   }
 
-  Child::part(default):hover {
+  Child:hover {
     color: green;
   }
 </style>

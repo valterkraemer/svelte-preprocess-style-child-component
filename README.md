@@ -1,13 +1,13 @@
 # svelte-preprocess-style-child-component
 
-### Note: this is more of a POC than something you actually should use.
+### Note: this is a POC, use with caution
 
-Allows you to style elements inside a child component.
+Allows you to style elements inside a child component using similar syntax as [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part).
 
 `Child.svelte`
 
 ```html
-<h1 part="default">Child component!</h1>
+<h1 part="heading">Child component!</h1>
 ```
 
 `Parent.svelte`
@@ -20,7 +20,7 @@ Allows you to style elements inside a child component.
 <Child />
 
 <style>
-  Child::part(default) {
+  Child::part(heading) {
     color: red;
   }
 </style>
@@ -42,6 +42,56 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 }
 ```
 
+## Additional features
+
+### Class selector
+
+```html
+<Card class="item" />
+<OtherCard class="item" />
+
+<style>
+  .item::part(default) {
+    color: red;
+  }
+</style>
+```
+
+### Shorthand selector `Child` ➡️ `Child::part(default)`
+
+Component selector without `::part(x)` is treated as an alias for `::part(default)`.
+
+So these are the same:
+
+```css
+Child {
+  color: red;
+}
+
+Child::part(default) {
+  color: red;
+}
+```
+
+_NOTE_: You cannot skip the `::part` selector with just a class selector.
+
+```html
+<Child class="item" />
+<Child />
+
+<style>
+  .item {
+    /* Does not work */
+    color: red;
+  }
+
+  Child.item {
+    /* Works! */
+    color: red;
+  }
+</style>
+```
+
 ## How it works
 
 It transforms component selectors to global selectors, and passes down the class to the Child component, that then applies it to the correct elements.
@@ -49,13 +99,13 @@ It transforms component selectors to global selectors, and passes down the class
 ### `Child.svelte`
 
 ```html
-<h1 part="default">Child component!</h1>
+<h1 part="heading">Child component!</h1>
 ```
 
 ⬇️
 
 ```html
-<h1 class="{$$props.classes$$?.default}">Child component!</h1>
+<h1 class="{$$props.classes$$?.heading}">Child component!</h1>
 ```
 
 ### `Parent.svelte`
@@ -68,7 +118,7 @@ It transforms component selectors to global selectors, and passes down the class
 <Child />
 
 <style>
-  Child::part(default) {
+  Child::part(heading) {
     color: red;
   }
 </style>
@@ -81,23 +131,11 @@ It transforms component selectors to global selectors, and passes down the class
   import Child from "./Child.svelte";
 </script>
 
-<Child classes$$={{default:"svelte-child-1t1isc6"}} />
+<Child classes$$={{heading:"svelte-child-1t1isc6"}} />
 
 <style>
   :global(.svelte-child-1t1isc6) {
     color: red;
   }
 </style>
-```
-
-## Issues
-
-I'm sure there a bunch of cases where this won't work as expected. Here are some I've stubled upon. They could probably be fixed, but this is more of a POC.
-
-```html
-<!-- does not work -->
-<h1 class={dynamicClass}>Child component!</h1>
-
-<!-- works -->
-<h1 class="{dynamicClass}">Child component!</h1>
 ```

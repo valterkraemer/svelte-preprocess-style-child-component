@@ -1,0 +1,11 @@
+<script>
+  import Child from "./Child.svelte";
+</script>
+
+<Child parts$$={{"default":"svelte-child-1t1isc6"}} />
+
+<style>
+  :global(.svelte-child-1t1isc6) {
+    color: red;
+  }
+</style>

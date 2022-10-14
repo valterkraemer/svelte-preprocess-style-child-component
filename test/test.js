@@ -25,6 +25,7 @@ testFixture("Class.svelte");
 testFixture("Decendant.svelte");
 testFixture("ExportSelector.svelte");
 testFixture("Parent.svelte");
+testFixture("ShorthandSelector.svelte");
 testFixture("TargetUsingClass.svelte");
 
 test.run();

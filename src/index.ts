@@ -165,13 +165,28 @@ export const styleChildComponent = (): PreprocessorGroup => {
                       childChunks.push(childChunk);
                     }
 
-                    // Only keep chunks with :part selector
+                    // Only keep chunks with :part selector or the Component name is in the selector
                     childChunks = childChunks.filter((childChunk) => {
-                      return childChunk.some(
-                        (child) =>
+                      return childChunk.some((child) => {
+                        if (
                           child.type === "PseudoElementSelector" &&
                           child.name === "part"
-                      );
+                        ) {
+                          return true;
+                        }
+
+                        if (
+                          child.type === "TypeSelector" &&
+                          componentInstances.some(
+                            (componentInstance) =>
+                              componentInstance.typeSelector === child.name
+                          )
+                        ) {
+                          return true;
+                        }
+
+                        return false;
+                      });
                     });
 
                     // Only keep chunks that target a componentInstance
@@ -179,7 +194,7 @@ export const styleChildComponent = (): PreprocessorGroup => {
                       .map((childChunk) => {
                         let instances = componentInstances.slice();
                         const removeChildren: Node[] = [];
-                        let part = "";
+                        let part = "default";
 
                         childChunk.forEach((child) => {
                           switch (child.type) {

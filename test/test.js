@@ -13,7 +13,7 @@ function testFixture(fileName) {
 
     const result = await preprocess(fileContent, [styleChildComponent()]);
 
-    //console.log(result.code);
+    // console.log(result.code);
     await fileSnapshot(fileName, result.code);
   });
 }
@@ -25,5 +25,6 @@ testFixture("Class.svelte");
 testFixture("Decendant.svelte");
 testFixture("ExportSelector.svelte");
 testFixture("Parent.svelte");
+testFixture("TargetUsingClass.svelte");
 
 test.run();

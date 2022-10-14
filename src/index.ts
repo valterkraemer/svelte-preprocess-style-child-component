@@ -53,14 +53,8 @@ export const styleChildComponent = (): PreprocessorGroup => {
               let start = 0;
               let end = 0;
 
-              let exit = false;
               walk(node, {
                 enter(childNode: Node) {
-                  if (exit) {
-                    this.skip();
-                    return;
-                  }
-
                   if (childNode.type === "TypeSelector") {
                     const char = childNode.name[0];
 
@@ -80,7 +74,6 @@ export const styleChildComponent = (): PreprocessorGroup => {
                     end = childNode.end;
 
                     this.skip();
-                    exit = true;
                   }
                 },
               });

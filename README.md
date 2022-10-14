@@ -139,3 +139,7 @@ It transforms component selectors to global selectors, and passes down the class
   }
 </style>
 ```
+
+## Issues?
+
+I'm sure there are! Please submit an issue!

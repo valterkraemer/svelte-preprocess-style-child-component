@@ -1,7 +1,5 @@
 # svelte-preprocess-style-child-component
 
-### Note: this is a POC, use with caution
-
 Allows you to style elements inside a child component using similar syntax as [CSS Shadow Parts](https://developer.mozilla.org/en-US/docs/Web/CSS/::part).
 
 `Child.svelte`
@@ -165,4 +163,4 @@ It transforms component selectors to global selectors, and passes down the class
 
 ## Issues?
 
-I'm sure there are! Please submit an issue!
+I'm sure there are some! Please submit an issue if it doesn't work as expected!

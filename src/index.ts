@@ -15,6 +15,8 @@ export const styleChildComponent = (): PreprocessorGroup => {
     markup: ({ content, filename }) => {
       const s = new MagicString(content);
 
+      // parse doesn't like TS syntax, so I just replace the scripts with the
+      // same amount of whitespaces to match MagicString's indexes
       const scriptlessContent = content.replace(
         /<!--[^]*?-->|<script(\s[^]*?)?(?:>([^]*?)<\/script>|\/>)/gi,
         (match) => {

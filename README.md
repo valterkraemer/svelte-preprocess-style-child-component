@@ -61,7 +61,7 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 }
 ```
 
-## Typescript
+### Typescript
 
 Create a Typescript declaration file and reference it in your `tsconfig.json`.
 

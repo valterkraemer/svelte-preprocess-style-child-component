@@ -46,6 +46,24 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 }
 ```
 
+### Overwriting CSS component rules
+
+By default, the specificity of CSS component rules outweighs the specificity of the rules later applied. Anonymous layering can circumvent this behaviour, allowing to overwrite properties.
+
+```svelte
+<!-- Child.svelte -->
+
+<style>
+  @layer {
+    p {
+      color: red;
+    }
+  }
+</style>
+```
+
+For more information on [layering](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer), see the MDN Web Docs.
+
 ### Depending on a CSS preprocessor (e.g. Sass)
 
 ```shell

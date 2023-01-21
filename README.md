@@ -46,6 +46,62 @@ import { styleChildComponent } from "svelte-preprocess-style-child-component";
 }
 ```
 
+### Overwriting CSS component rules
+
+By default, the specificity of CSS component rules outweighs the specificity of the rules later applied. Anonymous layering can circumvent this behaviour, allowing to overwrite properties.
+
+```svelte
+<!-- Child.svelte -->
+
+<style>
+  @layer {
+    p {
+      color: red;
+    }
+  }
+</style>
+```
+
+For more information on [layering](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer), see the MDN Web Docs.
+
+### Depending on a CSS preprocessor (e.g. Sass)
+
+```shell
+npm i -D svelte-sequential-preprocessor svelte-preprocess-style-child-component
+```
+
+```js
+import seqPreprocessor from 'svelte-sequential-preprocessor';
+import { styleChildComponent } from "svelte-preprocess-style-child-component";
+...
+{
+  preprocess: seqPreprocessor([preprocess(), styleChildComponent()]), // Ensure styleChildComponent is called after the CSS preprocessor
+}
+```
+
+### Typescript
+
+Create a Typescript declaration file and reference it in your `tsconfig.json`.
+
+```ts
+// e.g. ./types/svelte-preprocess-style-child-component.d.ts
+
+declare namespace svelteHTML {
+  interface HTMLAttributes {
+    part?: string | boolean;
+  }
+}
+```
+
+> **Warning**
+> If modifying your `tsconfig.json`, objects are merged, but arrays are overwritten. Thus, it is necessary to manually merge files and directories referenced in `./.svelte-kit/tsconfig.json`.
+
+```json
+{
+  "include": ["./types/**/*.d.ts"]
+}
+```
+
 ## Additional features
 
 ### Class selector
@@ -116,8 +172,8 @@ It transforms component selectors to global selectors, and passes down the class
 ⬇️
 
 ```html
-<div class={$$props.parts$$?.default$$}>
-  <h1 class={$$props.parts$$?.heading}>Child component!</h1>
+<div class="{$$props.parts$$?.default$$}">
+  <h1 class="{$$props.parts$$?.heading}">Child component!</h1>
 </div>
 ```
 
@@ -148,7 +204,8 @@ It transforms component selectors to global selectors, and passes down the class
   import Child from "./Child.svelte";
 </script>
 
-<Child parts$$={{"default$$":"svelte-child-27gw8r","heading":"svelte-child-qzjtt3"}} />
+<Child
+parts$$={{"default$$":"svelte-child-27gw8r","heading":"svelte-child-qzjtt3"}} />
 
 <style>
   :global(.svelte-child-27gw8r) {
